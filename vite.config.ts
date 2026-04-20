@@ -13,6 +13,7 @@ export default defineConfig({
   },
   test: {
     include: ["src/**/*.test.ts"],
+    globalSetup: ["src/test-setup.ts"],
   },
   lint: {
     options: {

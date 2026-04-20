@@ -3,12 +3,11 @@ import { afterAll, beforeAll, describe, expect, test } from "vite-plus/test";
 import { gristDoc } from "./doc.ts";
 import { createRequester } from "./request.ts";
 
+// Populated by src/test-setup.ts (globalSetup).
 const baseDocUrl = process.env.GRIST_TEST_DOC_URL;
 const apiKey = process.env.GRIST_TEST_API_KEY;
 
-const liveTest = baseDocUrl ? describe : describe.skip;
-
-liveTest("gristDoc (live)", () => {
+describe("gristDoc (live)", () => {
   const tableId = `KitTest_${Math.random().toString(36).slice(2, 10)}`;
 
   interface Schema {
