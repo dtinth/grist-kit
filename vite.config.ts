@@ -5,10 +5,13 @@ export default defineConfig({
     "*": "vp check --fix",
   },
   pack: {
-    dts: {
-      tsgo: true,
-    },
+    dts: { tsgo: true, sourcemap: true },
     exports: true,
+    unbundle: true,
+    sourcemap: true,
+  },
+  test: {
+    include: ["src/**/*.test.ts"],
   },
   lint: {
     options: {
