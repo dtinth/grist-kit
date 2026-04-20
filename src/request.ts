@@ -2,19 +2,27 @@ import { type $Fetch, type FetchOptions, FetchError, ofetch } from "ofetch";
 
 import { GristApiError, GristNetworkError } from "./errors.ts";
 
+/** Configuration for creating a requester bound to a single Grist document. */
 export interface GristRequestConfig {
+  /** Base URL of the Grist document, with or without a trailing slash. */
   baseDocUrl: string;
   /** Omit or pass an empty string for unauthenticated Grist instances. */
   apiKey?: string;
+  /** Additional options forwarded to the underlying `ofetch` client. */
   fetchOptions?: FetchOptions;
 }
 
+/** Low-level request helpers used by higher-level document and table APIs. */
 export interface GristRequester {
+  /** Configured `ofetch` instance used for raw requests. */
   fetch: $Fetch;
+  /** Normalized base URL of the Grist document. */
   baseDocUrl: string;
+  /** Sends a request relative to the Grist document base URL. */
   request: <T = unknown>(path: string, options?: FetchOptions) => Promise<T>;
 }
 
+/** Creates a low-level requester for Grist document API calls. */
 export function createRequester(config: GristRequestConfig): GristRequester {
   const baseDocUrl = config.baseDocUrl.replace(/\/+$/, "");
   const headers: Record<string, string> = {};

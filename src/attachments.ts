@@ -1,26 +1,41 @@
 import type { GristRequester } from "./request.ts";
 
+/** Accepted input values for uploading attachments to a Grist document. */
 export type AttachmentInput =
   | File
   | Blob
   | {
+      /** File name to store in Grist. */
       filename: string;
+      /** Binary data to upload. */
       data: Blob | Uint8Array | ArrayBuffer | ReadableStream<Uint8Array>;
+      /** MIME type to associate with the uploaded file. */
       type?: string;
     };
 
+/** Attachment metadata returned by the Grist API. */
 export interface AttachmentMetadata {
+  /** Attachment record ID. */
   id: number;
+  /** Original file name stored in Grist. */
   fileName: string;
+  /** File size in bytes. */
   fileSize: number;
+  /** Upload timestamp in ISO 8601 format. */
   timeUploaded: string;
+  /** Additional metadata fields returned by Grist. */
   [key: string]: unknown;
 }
 
+/** Attachment operations for a Grist document. */
 export interface GristAttachments {
+  /** Uploads files and returns the created attachment IDs. */
   upload(files: AttachmentInput[]): Promise<number[]>;
+  /** Retrieves metadata for an attachment by ID. */
   get(id: number): Promise<AttachmentMetadata>;
+  /** Downloads an attachment as a `Blob`. */
   download(id: number): Promise<Blob>;
+  /** Downloads an attachment as a readable byte stream. */
   downloadStream(id: number): Promise<ReadableStream<Uint8Array>>;
 }
 
