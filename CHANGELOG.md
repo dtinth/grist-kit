@@ -1,5 +1,11 @@
 # grist-kit
 
+## 0.1.1
+
+### Patch Changes
+
+- 13f5cd8: Add API documentation comments for the public TypeScript surface.
+
 ## 0.1.0
 
 ### Minor Changes
