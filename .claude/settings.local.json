@@ -1,5 +1,0 @@
-{
-  "permissions": {
-    "allow": ["Bash(vp check)", "Bash(vp check *)"]
-  }
-}
