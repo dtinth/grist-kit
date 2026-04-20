@@ -1,16 +1,26 @@
 {
-  "name": "fresh-app",
+  "name": "grist-kit",
   "version": "0.0.0",
-  "description": "A starter for creating a TypeScript package.",
+  "description": "Typesafe Grist JS library and CLI.",
+  "keywords": [
+    "cli",
+    "codegen",
+    "grist",
+    "grist-api",
+    "typescript"
+  ],
   "homepage": "https://github.com/dtinth/grist-kit#readme",
   "bugs": {
     "url": "https://github.com/dtinth/grist-kit/issues"
   },
   "license": "MIT",
-  "author": "Author Name <author.name@mail.com>",
+  "author": "Thai Pangsakulyanont <org.yi.dttvb@gmail.com>",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dtinth/grist-kit.git"
+  },
+  "bin": {
+    "grist-kit": "./dist/cli.mjs"
   },
   "files": [
     "dist",
