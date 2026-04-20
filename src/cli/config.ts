@@ -2,7 +2,7 @@ import { config as loadDotenv } from "dotenv";
 
 export interface ResolvedConfig {
   baseDocUrl: string;
-  apiKey: string;
+  apiKey?: string;
 }
 
 export interface SharedCliOptions {
@@ -19,9 +19,6 @@ export function resolveConfig(options: SharedCliOptions): ResolvedConfig {
 
   if (!baseDocUrl) {
     throw new Error("Grist doc URL is required. Pass --doc-url or set GRIST_DOC_URL.");
-  }
-  if (!apiKey) {
-    throw new Error("Grist API key is required. Pass --api-key or set GRIST_API_KEY.");
   }
   return { baseDocUrl, apiKey };
 }

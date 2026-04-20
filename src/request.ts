@@ -4,7 +4,8 @@ import { GristApiError, GristNetworkError } from "./errors.ts";
 
 export interface GristRequestConfig {
   baseDocUrl: string;
-  apiKey: string;
+  /** Omit or pass an empty string for unauthenticated Grist instances. */
+  apiKey?: string;
   fetchOptions?: FetchOptions;
 }
 
@@ -16,10 +17,9 @@ export interface GristRequester {
 
 export function createRequester(config: GristRequestConfig): GristRequester {
   const baseDocUrl = config.baseDocUrl.replace(/\/+$/, "");
-  const base = ofetch.create({
-    headers: { Authorization: `Bearer ${config.apiKey}` },
-    ...config.fetchOptions,
-  });
+  const headers: Record<string, string> = {};
+  if (config.apiKey) headers.Authorization = `Bearer ${config.apiKey}`;
+  const base = ofetch.create({ headers, ...config.fetchOptions });
 
   const request = async <T = unknown>(path: string, options: FetchOptions = {}): Promise<T> => {
     const url = path.startsWith("http")
