@@ -6,23 +6,73 @@
  * record shapes from it.
  */
 export type GristColumnType =
-  | { type: "Text" }
-  | { type: "Numeric" }
-  | { type: "Int" }
-  | { type: "Bool" }
-  | { type: "Date" }
-  | { type: "DateTime" }
-  | { type: "Choice"; choices?: readonly string[] }
-  | { type: "ChoiceList"; choices?: readonly string[] }
-  | { type: "Ref"; table?: string }
-  | { type: "RefList"; table?: string }
-  | { type: "Attachments" }
-  | { type: "Any" };
+  | {
+      /** Grist column kind. */
+      type: "Text";
+    }
+  | {
+      /** Grist column kind. */
+      type: "Numeric";
+    }
+  | {
+      /** Grist column kind. */
+      type: "Int";
+    }
+  | {
+      /** Grist column kind. */
+      type: "Bool";
+    }
+  | {
+      /** Grist column kind. */
+      type: "Date";
+    }
+  | {
+      /** Grist column kind. */
+      type: "DateTime";
+    }
+  | {
+      /** Grist column kind. */
+      type: "Choice";
+      /** Allowed choice values, when the set is known ahead of time. */
+      choices?: readonly string[];
+    }
+  | {
+      /** Grist column kind. */
+      type: "ChoiceList";
+      /** Allowed choice values, when the set is known ahead of time. */
+      choices?: readonly string[];
+    }
+  | {
+      /** Grist column kind. */
+      type: "Ref";
+      /** Referenced table name, when known. */
+      table?: string;
+    }
+  | {
+      /** Grist column kind. */
+      type: "RefList";
+      /** Referenced table name, when known. */
+      table?: string;
+    }
+  | {
+      /** Grist column kind. */
+      type: "Attachments";
+    }
+  | {
+      /** Grist column kind. */
+      type: "Any";
+    };
 
-export type GristColumn = GristColumnType & { isFormula?: boolean };
+/** Full Grist column descriptor, including whether the column is formula-backed. */
+export type GristColumn = GristColumnType & {
+  /** Whether Grist computes this column from a formula instead of user input. */
+  isFormula?: boolean;
+};
 
+/** Schema definition for a single Grist table keyed by column name. */
 export type GristTableSchema = Record<string, GristColumn>;
 
+/** Schema definition for a full Grist document keyed by table name. */
 export type GristSchema = Record<string, GristTableSchema>;
 
 type CellValue<C extends GristColumn> = C extends { type: "Text" }
@@ -50,7 +100,10 @@ type CellValue<C extends GristColumn> = C extends { type: "Text" }
                       : unknown;
 
 /** Row shape as returned by the REST `/records` endpoint. All columns nullable. */
-export type Read<T extends GristTableSchema> = { id: number } & {
+export type Read<T extends GristTableSchema> = {
+  /** Stable Grist row identifier. */
+  id: number;
+} & {
   [K in keyof T]: CellValue<T[K]> | null;
 };
 
@@ -64,4 +117,7 @@ export type Insert<T extends GristTableSchema> = {
 };
 
 /** Payload shape for updates/upserts. Formulas excluded; id required. */
-export type Update<T extends GristTableSchema> = { id: number } & Insert<T>;
+export type Update<T extends GristTableSchema> = {
+  /** Stable Grist row identifier. */
+  id: number;
+} & Insert<T>;
