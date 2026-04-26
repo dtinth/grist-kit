@@ -49,17 +49,38 @@ async function waitForGrist(): Promise<void> {
 }
 
 async function createEmptyDoc(): Promise<string> {
-  return (await fetchJson(`${gristUrl()}/api/docs`, {
+  const url = `${gristUrl()}/api/docs`;
+  const init: RequestInit = {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify({ documentName: "grist-kit-test" }),
-  })) as string;
+  };
+
+  const deadline = Date.now() + 60_000;
+  let lastError: unknown;
+  while (Date.now() < deadline) {
+    try {
+      return (await fetchJson(url, init)) as string;
+    } catch (error) {
+      lastError = error;
+      if (!(error instanceof Error) || !/-> 503\b/.test(error.message)) throw error;
+      await sleep(1000);
+    }
+  }
+  throw new Error(
+    `Grist API did not accept POST /api/docs within 60s. Last error: ${
+      lastError instanceof Error ? lastError.message : String(lastError)
+    }`,
+  );
 }
 
 async function fetchJson(url: string, init?: RequestInit): Promise<unknown> {
   const response = await fetch(url, init);
   if (!response.ok) {
-    throw new Error(`${init?.method ?? "GET"} ${url} -> ${response.status}`);
+    const body = await response.text().catch(() => "");
+    throw new Error(
+      `${init?.method ?? "GET"} ${url} -> ${response.status}${body ? ` ${body}` : ""}`,
+    );
   }
   return response.json();
 }
