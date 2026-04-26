@@ -16,9 +16,9 @@ npm install grist-kit
 
 In this tutorial you'll connect to a real Grist doc, generate typesafe bindings, and build a script that finds low-stock products and places an incoming order to refill them.
 
-We'll use the [Inventory Manager](https://www.getgrist.com/templates/inventory-manager/) template. It tracks products, incoming orders (refills from suppliers), and outgoing orders (sales). Stock is computed: `In_Stock = Received - Sold`, and a `Stock_Alert` column flags items as `"Low Stock"` or `"OUT OF STOCK"`.
+We'll use the [Inventory Manager](https://www.getgrist.com/templates/inventory-manager/) template. It tracks products, incoming orders (refills from suppliers), and outgoing orders (sales). Our goal: a script that automates restocking by detecting which products are running low and placing a single incoming order to refill them.
 
-Prerequisites: Node.js 24+ (for native TypeScript support) and pnpm.
+Prerequisites: [Node.js 24+](https://nodejs.org/docs/latest/api/typescript.html) (for native TypeScript support) and [pnpm](https://pnpm.io/).
 
 ### Part 1 — Connect to the public template
 
@@ -54,7 +54,7 @@ Generate a schema file from the live doc:
 pnpm exec grist-kit generate --out grist-schema.ts
 ```
 
-This writes a `GristSchema` type literal describing every table and column — including the literal choice values for `Choice` columns, which is what makes the filter calls in the next step typesafe.
+This generates a [`grist-schema.ts`](./examples/Inventory-Manager/grist-schema.ts) file.
 
 > [!TIP]
 > You'll re-run this whenever the doc's columns change. Save it as a `package.json` script so it's easy to remember:
@@ -63,11 +63,11 @@ This writes a `GristSchema` type literal describing every table and column — i
 > pnpm pkg set scripts.update-grist-schema="grist-kit generate --out grist-schema.ts"
 > ```
 >
-> Then `pnpm update-grist-schema` regenerates the file. The `pnpm pkg` subcommand passes through to [`npm pkg`](https://docs.npmjs.com/cli/v7/commands/npm-pkg) (added to pnpm in [v7.17.1](https://github.com/pnpm/pnpm/releases/tag/v7.17.1)).
+> Afterwards you can run `pnpm run update-grist-schema` to regenerate the types.
 
 ### Part 3 — Set up TypeScript
 
-To get the type errors we promised, install TypeScript and the Node 24 base config:
+To get the type errors we promised, install TypeScript and the [Node 24 base config](https://www.npmjs.com/package/@tsconfig/node24):
 
 ```bash
 pnpm add -D typescript @types/node @tsconfig/node24
