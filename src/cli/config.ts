@@ -12,7 +12,7 @@ export interface SharedCliOptions {
 }
 
 export function resolveConfig(options: SharedCliOptions): ResolvedConfig {
-  loadDotenv(options.envFile ? { path: options.envFile } : undefined);
+  loadDotenv({ quiet: true, ...(options.envFile ? { path: options.envFile } : {}) });
 
   const baseDocUrl = options.docUrl ?? process.env.GRIST_DOC_URL;
   const apiKey = options.apiKey ?? process.env.GRIST_API_KEY;
