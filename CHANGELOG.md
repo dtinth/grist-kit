@@ -1,5 +1,12 @@
 # grist-kit
 
+## 0.1.2
+
+### Patch Changes
+
+- 18ab687: Suppress the dotenv startup tip line in CLI output by [passing `quiet: true`](https://github.com/motdotla/dotenv/issues/876) to dotenv's loader.
+- ccc4d3c: Add a step-by-step README tutorial walking through the Inventory Manager template: connect, generate types, and write a typesafe refill script with `--dry-run`.
+
 ## 0.1.1
 
 ### Patch Changes
