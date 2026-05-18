@@ -1,3 +1,9 @@
+/**
+ * grist-kit — type-safe Grist client library.
+ *
+ * Main entry points: {@link gristDoc}, {@link GristDoc}, {@link GristTable}, {@link GristAttachments}.
+ * @module
+ */
 export { GristApiError, GristNetworkError } from "./errors.ts";
 export { createRequester } from "./request.ts";
 export type { GristRequestConfig, GristRequester } from "./request.ts";

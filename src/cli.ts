@@ -29,15 +29,26 @@ program
 program
   .command("tables")
   .description("List tables in the doc")
-  .action(async () => {
+  .option("--format <format>", "text | json", "text")
+  .action(async (cmdOptions: { format: "text" | "json" }) => {
     const config = resolveConfig(program.opts());
     const requester = createRequester(config);
     const tables = await listTables(requester);
-    for (const table of tables) {
-      const columns = await listColumns(requester, table.id);
-      console.log(table.id);
-      for (const column of columns) {
-        console.log(`  ${column.id} ${column.fields.type ?? "?"}`);
+    if (cmdOptions.format === "json") {
+      const result = await Promise.all(
+        tables.map(async (table) => ({
+          ...table,
+          columns: await listColumns(requester, table.id),
+        })),
+      );
+      console.log(JSON.stringify(result, null, 2));
+    } else {
+      for (const table of tables) {
+        const columns = await listColumns(requester, table.id);
+        console.log(table.id);
+        for (const column of columns) {
+          console.log(`  ${column.id} ${column.fields.type ?? "?"}`);
+        }
       }
     }
   });
