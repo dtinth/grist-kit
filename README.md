@@ -1,6 +1,10 @@
 # grist-kit
 
-Typesafe JavaScript library and CLI for [Grist](https://www.getgrist.com).
+A CLI and type-safe client library for [Grist](https://www.getgrist.com), written in TypeScript. It provides:
+
+- An agent-friendly CLI for interacting with Grist documents.
+- A command-line tool to generate type definition from Grist table schema.
+- A type-safe client for programmatically query and manipulate Grist documents.
 
 ## Status
 
