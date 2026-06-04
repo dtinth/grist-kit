@@ -13,6 +13,11 @@ program
   .description("Typesafe Grist JS library and CLI")
   .addOption(new Option("--doc-url <url>", "Grist base doc URL").env("GRIST_DOC_URL"))
   .addOption(new Option("--api-key <key>", "Grist API key").env("GRIST_API_KEY"))
+  .addOption(
+    new Option("--access-token <token>", "Grist access token (?auth=...)").env(
+      "GRIST_ACCESS_TOKEN",
+    ),
+  )
   .option("--env-file <path>", "Path to .env file to load");
 
 program
