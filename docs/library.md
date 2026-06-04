@@ -9,7 +9,6 @@ library/installation
 library/generate
 library/client
 library/authentication
-library/custom-widgets
 library/records
 library/attachments
 ```
