@@ -1,5 +1,17 @@
 # grist-kit
 
+## 0.2.0
+
+### Minor Changes
+
+- e99cbe0: Add support for Grist access tokens (`?auth=` query parameter) in addition to API keys. Pass `accessToken: string | (() => string | Promise<string>)` to `gristDoc()` / `createRequester()`. CLI gains `--access-token` / `GRIST_ACCESS_TOKEN`. `apiKey` and `accessToken` are mutually exclusive. See the new `authentication` doc page.
+- c40241b: Ship documentation with the CLI. A new `grist-kit help [topic]` command lists and prints documentation topics (quickstart, configuration, per-command guides, client library guides, and the full tutorial), making the docs discoverable offline and by AI agents. `grist-kit --help` and per-command `--help` now point to the relevant topics. The docs site is now generated from the same in-source content (`src/help/topics.ts`) via `vp run docs`, with a test that keeps `docs/` in sync.
+
+### Patch Changes
+
+- 5825007: Add thdocs documentation site at https://docs.dt.in.th/grist-kit/ with guides for CLI usage, library setup, and full example project
+- 5825007: Add `--format` flag to `tables` CLI command for JSON output with full column metadata
+
 ## 0.1.2
 
 ### Patch Changes
