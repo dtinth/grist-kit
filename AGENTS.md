@@ -86,3 +86,7 @@ For GitHub Actions, consider using [`voidzero-dev/setup-vp`](https://github.com/
 - [ ] Run `vp install` after pulling remote changes and before getting started.
 - [ ] Run `vp check` and `vp test` to validate changes.
 <!--VITE PLUS END-->
+
+# Documentation
+
+All documentation lives in `src/help/topics.ts` and ships with the CLI (`grist-kit help <topic>`). The `docs/` directory (thdocs site) is **generated** from it — never edit `docs/` by hand. After changing help content, run `vp run docs` to regenerate the site and commit the result; `src/help/docs-sync.test.ts` fails CI if `docs/` is out of sync.

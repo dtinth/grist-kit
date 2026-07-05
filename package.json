@@ -40,6 +40,7 @@
     "dev": "vp pack --watch",
     "test": "vp test",
     "check": "vp check",
+    "docs": "node scripts/build-docs.ts",
     "prepublishOnly": "vp run build",
     "prepare": "vp config"
   },

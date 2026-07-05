@@ -14,4 +14,14 @@ A CLI and type-safe client library for [Grist](https://www.getgrist.com), writte
 npm install grist-kit
 ```
 
-For full documentation including a tutorial, CLI reference, and API reference, see the [docs site](https://docs.dt.in.th/grist-kit/).
+## Documentation
+
+Documentation ships with the CLI itself, so it is always available offline and matches the installed version — handy for both humans and AI agents:
+
+```bash
+npx grist-kit help            # list documentation topics
+npx grist-kit help quickstart # read a topic
+npx grist-kit help --all      # print everything
+```
+
+The [docs site](https://docs.dt.in.th/grist-kit/) is generated from the same content (see `src/help/topics.ts`).

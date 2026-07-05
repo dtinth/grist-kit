@@ -6,11 +6,23 @@ import { resolveConfig } from "./cli/config.ts";
 import { runGenerate } from "./cli/generate.ts";
 import { createRequester } from "./request.ts";
 import { listColumns, listTables } from "./cli/introspect.ts";
+import {
+  findTopic,
+  renderAllTopics,
+  renderHelpIndex,
+  renderTopicList,
+  renderTopicPage,
+} from "./help/render.ts";
 
 const program = new Command();
 program
   .name("grist-kit")
   .description("Typesafe Grist JS library and CLI")
+  .helpCommand(false)
+  .addHelpText(
+    "after",
+    `\nDocumentation topics (run: grist-kit help <topic>):\n\n${renderTopicList()}\n`,
+  )
   .addOption(new Option("--doc-url <url>", "Grist base doc URL").env("GRIST_DOC_URL"))
   .addOption(new Option("--api-key <key>", "Grist API key").env("GRIST_API_KEY"))
   .addOption(
@@ -21,8 +33,36 @@ program
   .option("--env-file <path>", "Path to .env file to load");
 
 program
+  .command("help [topic]")
+  .description("Read documentation shipped with the CLI")
+  .option("--all", "Print every documentation topic")
+  .action((topic: string | undefined, cmdOptions: { all?: boolean }) => {
+    if (cmdOptions.all) {
+      console.log(renderAllTopics());
+      return;
+    }
+    if (!topic) {
+      console.log(renderHelpIndex());
+      return;
+    }
+    const found = findTopic(topic);
+    if (found) {
+      console.log(renderTopicPage(found));
+      return;
+    }
+    const command = program.commands.find((c) => c.name() === topic);
+    if (command) {
+      command.help();
+      return;
+    }
+    console.error(`Unknown help topic: ${topic}\n\nAvailable topics:\n\n${renderTopicList()}`);
+    process.exit(1);
+  });
+
+program
   .command("generate")
   .description("Generate a GristSchema type from a live doc")
+  .addHelpText("after", "\nMore: grist-kit help generate")
   .option("--out <path>", "Output file path", "./grist-schema.ts")
   .option("--type-name <name>", "Exported type name", "GristSchema")
   .action(async (cmdOptions: { out: string; typeName: string }) => {
@@ -34,6 +74,7 @@ program
 program
   .command("tables")
   .description("List tables in the doc")
+  .addHelpText("after", "\nMore: grist-kit help tables")
   .option("--format <format>", "text | json", "text")
   .action(async (cmdOptions: { format: "text" | "json" }) => {
     const config = resolveConfig(program.opts());
@@ -61,6 +102,7 @@ program
 program
   .command("records <table>")
   .description("Print records from a table as JSON")
+  .addHelpText("after", "\nMore: grist-kit help records")
   .option("--filter <spec...>", "Filter as key=value (repeatable)")
   .option("--limit <n>", "Max rows", (v) => Number(v))
   .option("--format <format>", "json | csv", "json")
@@ -81,6 +123,7 @@ program
 program
   .command("sql <query>")
   .description("Run a SQL query (read-only)")
+  .addHelpText("after", "\nMore: grist-kit help sql")
   .option("--format <format>", "json | csv", "json")
   .action(async (query: string, cmdOptions: { format: "json" | "csv" }) => {
     const config = resolveConfig(program.opts());
