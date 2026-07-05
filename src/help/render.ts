@@ -1,4 +1,4 @@
-import { allTopics, findTopic, overview, sections, type HelpTopic } from "./topics.ts";
+import { allTopics, overview, sections, type HelpTopic } from "./topics.ts";
 
 const GENERATED_NOTICE =
   "<!-- Generated from src/help/topics.ts — do not edit directly. Run `vp run docs` to regenerate. -->";
@@ -67,7 +67,5 @@ export function renderSiteFiles(): Map<string, string> {
 
 /** Turns `[text](url)` into `text (url)` so terminal output has no markdown-only syntax. */
 function stripMarkdownLinks(markdown: string): string {
-  return markdown.replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1 ($2)");
+  return markdown.replace(/\[([^\][]+)\]\(([^()]+)\)/g, "$1 ($2)");
 }
-
-export { allTopics, findTopic };

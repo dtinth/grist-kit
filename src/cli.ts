@@ -6,8 +6,8 @@ import { resolveConfig } from "./cli/config.ts";
 import { runGenerate } from "./cli/generate.ts";
 import { createRequester } from "./request.ts";
 import { listColumns, listTables } from "./cli/introspect.ts";
+import { findTopic } from "./help/topics.ts";
 import {
-  findTopic,
   renderAllTopics,
   renderHelpIndex,
   renderTopicList,
